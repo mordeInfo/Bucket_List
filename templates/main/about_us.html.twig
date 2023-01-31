@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <ul>
+{% for personne in team %}
+
+    <img src= "{{ personne['picture'] }}" width="100">
+
+    <li>{{ personne['firstname'] }}</li>
+    <li>{{ personne['lastname'] }}</li>
+    <li>{{ personne['dateOfBirth'] }}</li>
+    <li>{{ personne['creatorOf'] }}</li>
+    <li>{{ personne['description'] }}</li>
+
+    </br>
+   </br>
+{% endfor%}
+    </ul>
+
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+
