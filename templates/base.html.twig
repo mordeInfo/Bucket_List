@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns="http://www.w3.org/1999/html">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Bucket-List{% endblock %}</title>
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
+        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+
+    </head>
+    <body>
+    <header>
+
+         <div class ="container"></div>
+          <h1 class="header-logo"> <img src="{{ asset('media/logo.svg') }}" alt="">Bucket-list</h1>
+            <a href="{{ path('main_home') }}">Home</a>
+
+
+    </header>
+     <main>
+
+        {% block body %}{% endblock %}
+
+        </main>
+    <footer>
+        <div class="container">
+
+       <p> © Bucket-list {{ 'now' | date("Y") }}</p>
+        </div>
+    </footer>
+
+    </body>
+</html>
