@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+{% endblock %}
+
+{% block body %}
+    {% form_theme wishForm 'bootstrap_5_layout.html.twig' %}
+    <div>
+        <h2>Ajouter un souhait</h2>
+
+        {{ form_start(wishForm) }}
+
+        {{ form_widget(wishForm) }}
+
+
+        {{ form_end(wishForm) }}
+    </div>
+
+{% endblock %}

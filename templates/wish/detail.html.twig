@@ -5,6 +5,12 @@
 {% endblock %}
 
 {% block body %}
-
+    <img>
+    <article>
+        
+        <h2>{{ souhait.title }} :</h2>
+        <p>{{ souhait.description }}.</p>
+        <p>créé par {{ souhait.author }} le {{ souhait.dateCreated | date('d-m-Y') }}.</p>
+    </article>
 {% endblock %}
 
