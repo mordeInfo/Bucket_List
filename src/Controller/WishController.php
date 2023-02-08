@@ -4,15 +4,19 @@ namespace App\Controller;
 
 use App\Entity\Wish;
 use App\Form\AjoutType;
+use App\Repository\UserRepository;
 use App\Repository\WishRepository;
+use App\Service\Censurator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class WishController extends AbstractController
 {
+    #[isGranted('ROLE_USER')]
     #[Route('/list', name: 'wish_list')]
     public function liste(
 
@@ -25,7 +29,7 @@ class WishController extends AbstractController
         );
     }
 
-
+    #[isGranted('ROLE_USER')]
     #[Route('/detail{id}', name: 'wish_detail')]
     public function detail(
         int            $id,
@@ -38,15 +42,18 @@ class WishController extends AbstractController
         );
     }
 
+    #[isGranted('ROLE_USER')]
     #[Route('/ajout', name: 'wish_ajout')]
     public function ajout(
         EntityManagerInterface $em,
-        Request                $request
+        Request                $request,
+        UserRepository         $userRepository,
+        Censurator             $censurator
     ): Response
     {
         $souhait = new Wish();
-
-
+        $utilisateur = $userRepository->findOneBy(['username' => $this->getUser()->getUserIdentifier()]);
+        $souhait->setAuthor($utilisateur->getUsername());
         $wishForm = $this->createForm(AjoutType::class, $souhait);
         $wishForm->handleRequest($request);
 
@@ -55,7 +62,9 @@ class WishController extends AbstractController
             try {
                 $souhait->setIsPublished(true);
                 $souhait->setDateCreated(new \DateTime('now'));
+                $souhait->setDescription($censurator->purify($souhait->getDescription()));
                 if ($wishForm->isValid()) {
+
                     $em->persist($souhait);
                 }
             } catch (\Exception $exception) {
